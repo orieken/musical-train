@@ -116,7 +116,7 @@ timeout = 10
 
 ## Azure DevOps Integration
 
-The Azure DevOps subcommand provides functionality to create work items in Azure DevOps.
+The Azure DevOps subcommand provides functionality to interact with Azure DevOps, including creating work items and managing pull requests.
 
 ### Building the Subcommand
 
@@ -131,10 +131,10 @@ The following environment variables are required for authentication and configur
 
 - `AZURE_DEVOPS_PAT`: Your Azure DevOps Personal Access Token
 - `AZURE_DEVOPS_ORG`: Your Azure DevOps Organization name
-- `AZURE_DEVOPS_PROJECT`: Your Azure DevOps Project name
+- `AZURE_DEVOPS_PROJECT`: Your Azure DevOps Project name (required for work items)
 - `AZURE_DEVOPS_API_VERSION` (optional): The API version to use (defaults to "7.0")
 
-### Usage
+### Work Items
 
 #### Generating a Template
 
@@ -187,3 +187,81 @@ master-mold ado work-items create --json work-items.json
 ```
 
 This will create work items in Azure DevOps based on the JSON file provided.
+
+### Pull Requests
+
+#### Listing Open Pull Requests
+
+The `pull-requests list-open` command retrieves all open pull requests for all repositories within your Azure DevOps organization.
+
+```bash
+master-mold azure-devops pull-requests list-open
+# or using the alias
+master-mold ado pull-requests list-open
+```
+
+This will display a list of all open pull requests with details including:
+- Repository name
+- Pull request ID
+- Title
+- Creator
+- Creation date
+- Status
+- Target branch
+
+Example output:
+
+```
+Found 2 open pull requests:
+
+Repository: MyRepo1
+ID: 123
+Title: Fix: Bug in feature X
+Creator: John Doe
+Created: 2024-07-24T10:00:00Z
+Status: active
+Target Branch: refs/heads/main
+
+Repository: MyRepo2
+ID: 456
+Title: Feat: Implement new API endpoint
+Creator: Jane Smith
+Created: 2024-07-25T14:30:00Z
+Status: active
+Target Branch: refs/heads/develop
+```
+
+#### JSON Output
+
+You can also get the output in JSON format by using the `--json` flag:
+
+```bash
+master-mold azure-devops pull-requests list-open --json
+# or using the alias
+master-mold ado pull-requests list-open --json
+```
+
+Example JSON output:
+
+```json
+[
+  {
+    "repository": "MyRepo1",
+    "id": 123,
+    "title": "Fix: Bug in feature X",
+    "creator": "John Doe",
+    "created": "2024-07-24T10:00:00Z",
+    "status": "active",
+    "targetBranch": "refs/heads/main"
+  },
+  {
+    "repository": "MyRepo2",
+    "id": 456,
+    "title": "Feat: Implement new API endpoint",
+    "creator": "Jane Smith",
+    "created": "2024-07-25T14:30:00Z",
+    "status": "active",
+    "targetBranch": "refs/heads/develop"
+  }
+]
+```

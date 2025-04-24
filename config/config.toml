@@ -1,0 +1,7 @@
+# Master-Mold CLI Configuration
+
+# Base directory for master-mold (supports environment variable substitution)
+base_dir = "${HOME}/.master-mold"
+
+# Timeout in seconds for command execution
+timeout = 10
