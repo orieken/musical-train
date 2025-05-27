@@ -13,8 +13,11 @@ master-mold/
 ├── cmd/
 │   ├── master-mold/       # Main CLI application
 │   │   └── main.go
-│   └── mm-list-binaries/  # List binaries subcommand
-│       └── main.go
+│   ├── mm-list-binaries/  # List binaries subcommand
+│   │   └── main.go
+│   └── k8s-pods/          # Kubernetes pods status subcommand
+│       ├── main.go
+│       └── main_test.go
 ├── pkg/
 │   ├── binary/            # Binary discovery and execution
 │   │   ├── discovery.go
@@ -113,6 +116,62 @@ base_dir = "${HOME}/.master-mold"
 # Timeout in seconds for command execution
 timeout = 10
 ```
+
+## Kubernetes Pods CLI
+
+The Kubernetes Pods CLI provides functionality to view the status of pods in a Kubernetes cluster.
+
+### Building the Subcommand
+
+```bash
+go build -o mm-k8s-pods ./cmd/k8s-pods
+cp mm-k8s-pods ~/.master-mold/
+```
+
+### Features
+
+- Display status, uptime, and other information about pods
+- Status visualization with emojis
+- JSON output format for integration with dashboards
+- Namespace selection
+
+### Usage
+
+#### Display Pod Status
+
+```bash
+master-mold k8s-pods
+```
+
+This will display the status of all pods in the current namespace.
+
+#### Display Pod Status in a Specific Namespace
+
+```bash
+master-mold k8s-pods --namespace=kube-system
+```
+
+#### Output in JSON Format
+
+```bash
+master-mold k8s-pods --json
+```
+
+This will output the pod status in JSON format, which can be used for integration with dashboards or other tools.
+
+### Status Emojis
+
+The CLI uses the following emojis to represent pod status:
+
+- ✅ Running
+- ⏳ Pending
+- 🎉 Succeeded
+- ❌ Failed
+- ❓ Unknown
+- 💥 CrashLoopBackOff
+- ⚠️ Error
+- 🛑 Terminating
+- ⚪ Other
 
 ## Azure DevOps Integration
 

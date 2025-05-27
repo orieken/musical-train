@@ -47,6 +47,14 @@ func main() {
 		Run:   generateWorkItemTemplate,
 	}
 
+	// Create the assigned subcommand
+	var assignedCmd = &cobra.Command{
+		Use:   "assigned",
+		Short: "List work items assigned to a user",
+		Long:  "Lists all work items assigned to a user and displays the work item and time logged.",
+		Run:   listAssignedWorkItems,
+	}
+
 	// Create the pull-requests subcommand
 	var prCmd = &cobra.Command{
 		Use:   "pull-requests",
@@ -66,11 +74,16 @@ func main() {
 	createCmd.Flags().String("json", "", "Path to the JSON file containing work item definitions")
 	createCmd.MarkFlagRequired("json")
 
+	assignedCmd.Flags().String("user", "", "Username to filter work items by")
+	assignedCmd.MarkFlagRequired("user")
+	assignedCmd.Flags().Bool("json", false, "Output the results in JSON format")
+
 	listOpenCmd.Flags().Bool("json", false, "Output the results in JSON format")
 
 	// Add subcommands to their parent commands
 	workItemsCmd.AddCommand(createCmd)
 	workItemsCmd.AddCommand(templateCmd)
+	workItemsCmd.AddCommand(assignedCmd)
 	prCmd.AddCommand(listOpenCmd)
 
 	rootCmd.AddCommand(workItemsCmd)
